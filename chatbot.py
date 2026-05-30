@@ -1,6 +1,4 @@
-from groq import Groq
-
-client = Groq(api_key="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")
+import ollama # type: ignore
 
 conversation = [{"role": "system", "content": "You are a helpful assistant who replies pretending to be a superhero"}]
 
@@ -12,14 +10,14 @@ while True:
     if user_input == "quit":
         break
     
-    conversation.append({"role": "assistant", "content": user_input})
+    conversation.append({"role": "user", "content": user_input})
     
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
+    response = ollama.chat(
+        model="llama3.2",
         messages=conversation
     )
     
-    reply = response.choices[0].message.content
+    reply = response.message.content
     conversation.append({"role": "assistant", "content": reply})
     
     print(f"AI: {reply}\n")
