@@ -32,9 +32,12 @@ if uploaded_file:
         with st.chat_message("user"):
             st.write(question)
         
+        history = [{"role": "system", "content": f"You are a helpful assistant. Answer questions based on this document:\n\n{pdf_text}"}]
+        history += st.session_state.messages
+        
         response = ollama.chat(
             model="llama3.2",
-            messages=[{"role": "user", "content": f"Document: {pdf_text}\n\nQuestion: {question}"}]
+            messages=history
         )
         
         answer = response.message.content
